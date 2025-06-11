@@ -40,5 +40,14 @@ public class Curso {
     @NotNull(message = "El campo estado no puede quedar vacio")
     private Boolean estado;
 
+    public Curso(String nombre, Long duracion, LocalDate fechaCreacion, Long precio, Boolean estado){
+        this.nombre = nombre;
+        this.duracion = duracion;
+        this.fechaCreacion = fechaCreacion;
+        this.precio = precio;
+        this.estado = estado;
+
+    }
+
 
 }
