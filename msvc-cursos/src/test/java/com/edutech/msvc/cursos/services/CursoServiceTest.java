@@ -1,5 +1,6 @@
 package com.edutech.msvc.cursos.services;
 
+import com.edutech.msvc.cursos.exceptions.CursoException;
 import com.edutech.msvc.cursos.models.entities.Curso;
 import com.edutech.msvc.cursos.repositories.CursoRepository;
 import net.datafaker.Faker;
@@ -12,10 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -57,7 +55,7 @@ public class CursoServiceTest {
     }
 
     @Test
-    @DisplayName("Debo listar todos los cursos")
+    @DisplayName("Devuelve todos los cursos")
     public void shouldFindAllCursos(){
         List<Curso> cursos = this.cursos;
         cursos.add(cursoPrueba);
@@ -70,5 +68,40 @@ public class CursoServiceTest {
 
         verify(cursoRepository, times(1)).findAll();
 
+    }
+
+    @Test
+    @DisplayName("Encontrar por ID un curso")
+    public void shouldFindCursoById(){
+        when(cursoRepository.findById(1L)).thenReturn(Optional.of(cursoPrueba));
+        Curso result = cursoService.findById(1L);
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(this.cursoPrueba);
+
+        verify(cursoRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    @DisplayName("Encontrar por id un curso que no existe")
+    public void shouldNotFindMedicoById(){
+        Long idInexisente = 101L;
+        when(cursoRepository.findById(idInexisente)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() ->{
+            cursoService.findById(idInexisente);
+        }).isInstanceOf(CursoException.class)
+                .hasMessageContaining("El curso con id: " + idInexisente +
+                        " no se encuentra en la base de datos");
+        verify(cursoRepository, times(1)).findById(idInexisente);
+    }
+
+    @Test
+    @DisplayName("Debería guardar un curso")
+    public void shouldSaveCurso(){
+        when(cursoRepository.save(any(Curso.class))).thenReturn(this.cursoPrueba);
+        Curso result = cursoService.save((this.cursoPrueba));
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(this.cursoPrueba);
+        verify(cursoRepository,times(1)).save(any(Curso.class));
     }
 }
