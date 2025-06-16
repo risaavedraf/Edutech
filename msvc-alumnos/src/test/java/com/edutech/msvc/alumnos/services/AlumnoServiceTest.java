@@ -69,7 +69,7 @@ public class AlumnoServiceTest {
     }
 
     @Test
-    @DisplayName("Encontrar por id un medico")
+    @DisplayName("Encontrar por id un Alumno")
     public void shouldFinAlumnoById(){
         when(alumnoRepository.findById(1L)).thenReturn(Optional.of(alumnoPrueba));
         Alumno result = alumnoServicelmpl.findById(1L);
@@ -80,7 +80,7 @@ public class AlumnoServiceTest {
     }
 
     @Test
-    @DisplayName("Encontrar por id un medico que no existe")
+    @DisplayName("Encontrar por id un Alumno que no existe")
     public void shouldNotFindAlumnoById(){
         Long idInexistente = 1L;
         when(alumnoRepository.findById(idInexistente)).thenReturn(Optional.empty());
@@ -94,7 +94,7 @@ public class AlumnoServiceTest {
     }
 
     @Test
-    @DisplayName("Deberia guardar un medico")
+    @DisplayName("Deberia guardar un Alumno")
     public void shouldSaveAlumno(){
         when(alumnoRepository.save(any(Alumno.class))).thenReturn(this.alumnoPrueba);
         Alumno result = alumnoServicelmpl.save(this.alumnoPrueba);
