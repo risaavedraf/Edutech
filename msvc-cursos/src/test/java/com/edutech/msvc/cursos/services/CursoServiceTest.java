@@ -36,7 +36,7 @@ public class CursoServiceTest {
     @BeforeEach
     public void setUp(){
         this.cursoPrueba = new Curso(
-                "Curso_python", 123L, LocalDate.parse("2025-06-11"), 123L, Boolean.TRUE
+                "Curso_python", Long.valueOf(128L), LocalDate.parse("2025-06-11"), Long.valueOf(123L), Boolean.TRUE
         );
         Faker faker = new Faker(Locale.of("es","CL"));
         Random rand = new Random();
@@ -45,9 +45,9 @@ public class CursoServiceTest {
         for(int i=0;i<100;i++){
             Curso curso = new Curso();
             curso.setNombre(faker.educator().course());
-            curso.setDuracion(rand.nextLong());
+            curso.setDuracion(Long.valueOf(rand.nextLong()));
             curso.setFechaCreacion(faker.timeAndDate().birthday(uno, dos));
-            curso.setPrecio(rand.nextLong());
+            curso.setPrecio(Long.valueOf(rand.nextLong()));
             curso.setEstado(Boolean.TRUE);
 
             cursos.add(curso);
@@ -73,18 +73,18 @@ public class CursoServiceTest {
     @Test
     @DisplayName("Encontrar por ID un curso")
     public void shouldFindCursoById(){
-        when(cursoRepository.findById(1L)).thenReturn(Optional.of(cursoPrueba));
-        Curso result = cursoService.findById(1L);
+        when(cursoRepository.findById(Long.valueOf(1L))).thenReturn(Optional.of(cursoPrueba));
+        Curso result = cursoService.findById(Long.valueOf(1L));
         assertThat(result).isNotNull();
         assertThat(result).isEqualTo(this.cursoPrueba);
 
-        verify(cursoRepository, times(1)).findById(1L);
+        verify(cursoRepository, times(1)).findById(Long.valueOf(1L));
     }
 
     @Test
     @DisplayName("Encontrar por id un curso que no existe")
     public void shouldNotFindMedicoById(){
-        Long idInexisente = 101L;
+        Long idInexisente = Long.valueOf(10067L);
         when(cursoRepository.findById(idInexisente)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() ->{
