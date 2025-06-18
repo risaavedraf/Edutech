@@ -40,17 +40,20 @@ public class AlumnoControllerV2 {
     private AlumnoModelAssembler alumnoModelAssembler;
 
     @GetMapping
-    @Operation(summary = "Obtiene todos los medicos", description = "Devuele un List de Medicos en el Body")
-    @ApiResponses( value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Operacion existosa",
-                    content = @Content(
-                            mediaType = MediaTypes.HAL_JSON_VALUE,
-                            schema = @Schema(implementation = Alumno.class)
-                    )
-            )
-    })
+        @Operation(
+                summary = "Obtiene todos los alumnos",
+                description = "Este metodo retorna una lista de todos los alumnos registrados"
+        )
+        @ApiResponses(value = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Se retornaron todos los alumnos correctamente",
+                        content = @Content(
+                                mediaType = MediaTypes.HAL_JSON_VALUE,
+                                schema = @Schema(implementation = Alumno.class)
+                        )
+                )
+        })
     public ResponseEntity<CollectionModel<EntityModel<Alumno>>> findAll() {
         List<EntityModel<Alumno>> entityModels = this.alumnoService.findAll()
                 .stream()
@@ -69,28 +72,28 @@ public class AlumnoControllerV2 {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtiene un medico", description = "A través del id suministrado devuelve el medico con esa id")
-    @ApiResponses( value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Operacion existosa",
-                    content = @Content(
-                            mediaType = MediaTypes.HAL_JSON_VALUE,
-                            schema = @Schema(implementation = Alumno.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Medico no encontrado, con el id suministrado",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema =  @Schema(implementation = ErrorDTO.class)
-                    )
-            )
-    })
-    @Parameters(value = {
-            @Parameter(name="id", description = "Este es el id unico del medico", required = true)
-    })
+        @Operation(
+                summary = "Obtiene un alumno por su id",
+                description = "Este metodo retorna un alumno cuando es consultado mediante su id"
+        )
+        @ApiResponses(value = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Se retorna el alumno encontrado",
+                        content = @Content(
+                                mediaType = MediaTypes.HAL_JSON_VALUE,
+                                schema = @Schema(implementation = Alumno.class)
+                        )
+                ),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Error - Alumno con ID no existe",
+                        content = @Content(
+                                mediaType = "application/json",
+                                schema = @Schema(implementation = ErrorDTO.class)
+                        )
+                )
+        })
     public ResponseEntity<EntityModel<Alumno>> findById(@PathVariable Long id) {
         EntityModel<Alumno> entityModel = this.alumnoModelAssembler.toModel(
                 this.alumnoService.findById(id)
@@ -101,6 +104,22 @@ public class AlumnoControllerV2 {
     }
 
     @DeleteMapping("/{id}")
+        @Operation(
+                summary = "Elimina un alumno por su id",
+                description = "Este metodo elimina un alumno de la base de datos, " +
+                        "si el id no existe retorna un error 404"
+        )
+        @ApiResponses(value = {
+                @ApiResponse(responseCode = "204", description = "Alumno eliminado correctamente"),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Error - Alumno con ID no existe",
+                        content = @Content(
+                                mediaType = "application/json",
+                                schema = @Schema(implementation = ErrorDTO.class)
+                        )
+                )
+        })
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         alumnoService.delete(id);
         return ResponseEntity
@@ -109,35 +128,36 @@ public class AlumnoControllerV2 {
     }
 
     @PostMapping
-    @Operation(
-            summary = "Guarda un medico",
-            description = "Con este método podemos enviar los datos mediante un body y realizar el guardado"
-    )
-    @ApiResponses( value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "Guardado exitoso",
-                    content = @Content(
-                            mediaType = MediaTypes.HAL_JSON_VALUE,
-                            schema = @Schema(implementation = Alumno.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "El medico guardado ya se encuentra en la base de datos",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDTO.class)
-                    )
-            )
-    })
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "medico a crear",
-            content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = Alumno.class)
-            )
-    )
+        @Operation(
+                summary = "Crea un nuevo alumno",
+                description = "Este endpoint permite crear un nuevo alumno en el sistema"
+        )
+        @ApiResponses(value = {
+                @ApiResponse(
+                        responseCode = "201",
+                        description = "Alumno creado correctamente",
+                        content = @Content(
+                                mediaType = MediaTypes.HAL_JSON_VALUE,
+                                schema = @Schema(implementation = Alumno.class)
+                        )
+                ),
+                @ApiResponse(
+                        responseCode = "400",
+                        description = "Error de validación en los datos del alumno",
+                        content = @Content(
+                                mediaType = "application/json",
+                                schema = @Schema(implementation = ErrorDTO.class)
+                        )
+                )
+        })
+        @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                required = true,
+                description = "Este debe ser Json con los datos de alumno",
+                content = @Content(
+                        mediaType = "application/json",
+                        schema = @Schema(implementation = Alumno.class)
+                )
+        )
     public ResponseEntity<EntityModel<Alumno>>  create(@Valid @RequestBody Alumno medico) {
         Alumno medicoNew = this.alumnoService.save(medico);
         EntityModel<Alumno> entityModel = this.alumnoModelAssembler.toModel(medicoNew);
@@ -147,6 +167,28 @@ public class AlumnoControllerV2 {
                 .body(entityModel);
     }
     @PutMapping("/{id}")
+        @Operation(
+                summary = "Actualiza un alumno",
+                description = "Este endpoint permite actualizar los datos de un alumno existente"
+        )
+        @ApiResponses(value = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Alumno actualizado correctamente",
+                        content = @Content(
+                                mediaType = MediaTypes.HAL_JSON_VALUE,
+                                schema = @Schema(implementation = Alumno.class)
+                        )
+                ),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "Alumno no encontrado con el id suministrado",
+                        content = @Content(
+                                mediaType = "application/json",
+                                schema = @Schema(implementation = ErrorDTO.class)
+                        )
+                )
+        })
     public  ResponseEntity<Alumno> estadoCuenta(@PathVariable Long id, @Valid @RequestBody EstadoDTO estadoDTO){
         return ResponseEntity
                 .status(HttpStatus.CREATED)

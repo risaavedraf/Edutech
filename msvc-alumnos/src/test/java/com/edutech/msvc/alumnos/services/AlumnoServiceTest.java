@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -21,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 public class AlumnoServiceTest {
@@ -41,10 +41,12 @@ public class AlumnoServiceTest {
         String contrasenia = faker.expression("#{templatify 'A#######!', '#', 'a', 'z', 'A', 'Z', '0', '9', '!', '@', '#', '$', '%'}");
         for(int i=0;i<100;i++){
             Alumno alumno = new Alumno();
-
+            alumno.setIdUsuario((long) (i + 1));
             String numeroStr = faker.idNumber().valid().replaceAll("-","");
             String ultimo = numeroStr.substring(numeroStr.length()-1);
             String restante = numeroStr.substring(0, numeroStr.length()-1);
+            alumno.setRun(restante+"-"+ultimo);
+
 
             alumno.setNombres(faker.name().firstName());
             alumno.setApellidos(faker.name().lastName());
@@ -52,16 +54,24 @@ public class AlumnoServiceTest {
             alumno.setCorreo(faker.internet().emailAddress());
             alumno.setContraseña(contrasenia);
             alumno.setCuentaActiva(Boolean.TRUE);
+
+            this.alumnoList.add(alumno);
         }
-        this.alumnoPrueba = this.alumnoList.get(0);
+        this.alumnoPrueba = new Alumno(1l,"12345678-K", "Juan", "Pérez",
+                                        LocalDate.of(2000, 1, 1), "asdasdasd@gmail.com", "contrasenia123", Boolean.TRUE);
     }
 
     @Test
-    @DisplayName("Devuleve todos los Alumnos")
-    public void shouldFindAllAlumno(){
+    @DisplayName("Debe listar todos los Alumnos")
+    public void shouldFindAllMedicos(){
+
+        this.alumnoList.add(this.alumnoPrueba);
+
         when(alumnoRepository.findAll()).thenReturn(this.alumnoList);
+
         List<Alumno> result = alumnoServicelmpl.findAll();
-        assertThat(result).hasSize(200);
+
+        assertThat(result).hasSize(101);
         assertThat(result).contains(this.alumnoPrueba);
 
         verify(alumnoRepository, times(1)).findAll();
@@ -88,8 +98,8 @@ public class AlumnoServiceTest {
         assertThatThrownBy(() -> {
             alumnoServicelmpl.findById(idInexistente);
         }).isInstanceOf(AlumnoException.class)
-                .hasMessageContaining("El medico con id " + idInexistente
-                        + " no se encuentra en la base de datos");
+                .hasMessageContaining("El alumno con Id " + idInexistente
+                        + " no se encuentra el la base de datos");
         verify(alumnoRepository,times(1)).findById(idInexistente);
     }
 
@@ -102,4 +112,5 @@ public class AlumnoServiceTest {
         assertThat(result).isEqualTo(this.alumnoPrueba);
         verify(alumnoRepository,times(1)).save(any(Alumno.class));
     }
+    
 }
