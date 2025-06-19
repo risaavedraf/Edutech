@@ -46,8 +46,6 @@ public class AlumnoServiceTest {
             String ultimo = numeroStr.substring(numeroStr.length()-1);
             String restante = numeroStr.substring(0, numeroStr.length()-1);
             alumno.setRun(restante+"-"+ultimo);
-
-
             alumno.setNombres(faker.name().firstName());
             alumno.setApellidos(faker.name().lastName());
             alumno.setFechaNacimiento(faker.timeAndDate().birthday());

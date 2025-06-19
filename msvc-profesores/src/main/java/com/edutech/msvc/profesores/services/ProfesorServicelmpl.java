@@ -19,7 +19,7 @@ public class ProfesorServicelmpl implements ProfesorService {
     @Override
     public Profesor findById(Long id) {
         return this.profesorRepository.findById(id).orElseThrow(
-                () -> new ProfesorException("El Profesor con Id"+ id +" no se encuntra el la base de datos")
+                () -> new ProfesorException("El profesor con Id "+ id +" no se encuentra el la base de datos")
         );
     }
 
