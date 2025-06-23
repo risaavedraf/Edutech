@@ -30,13 +30,13 @@ public class ProfesorController {
 
     @GetMapping
     @Operation(
-            summary = "Obtiene todos los alumnos",
-            description = "Este metodo retorna una lista de todos los alumnos registrados"
+            summary = "Obtiene todos los profesores",
+            description = "Este metodo retorna una lista de todos los profesores registrados"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Se retornaron todos los alumnos correctamente",
+                    description = "Se retornaron todos los profesores correctamente",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = Profesor.class)
