@@ -45,4 +45,15 @@ public class Alumno {
     private String contraseña;
 
     private Boolean cuentaActiva;
+
+    public Alumno(String run , String nombres, String apellidos, LocalDate fechaNacimiento, String correo, String contraseña, Boolean cuentaActiva) {
+        this.run = run;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.fechaNacimiento = fechaNacimiento;
+        this.correo = correo;
+        this.contraseña = contraseña;
+        this.cuentaActiva = cuentaActiva;
+    }
 }
+
