@@ -1,5 +1,6 @@
 package com.edutech.msvc.inscripcion.controllers;
 
+import com.edutech.msvc.inscripcion.assemblers.InscripcionModelAssembler;
 import com.edutech.msvc.inscripcion.dtos.ErrorDTO;
 import com.edutech.msvc.inscripcion.dtos.InscripcionDTO;
 import com.edutech.msvc.inscripcion.dtos.InscripcionUpdateDTO;
@@ -14,7 +15,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,19 +27,26 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
+@Slf4j
 @RestController
-@RequestMapping("/api/v1/inscripciones")
+@RequestMapping("/api/v2/inscripciones")
 @Validated
 @Tag(
-        name = "Inscripciones API",
-        description = "Aquí se generan todos los metodos CRUD para Inscaripcion"
+        name = "Inscripciones API HATEOAS",
+        description = "Aquí se generan todos los metodos CRUD para Inscripcion"
 )
-public class InscripcionController {
+public class InscripcionControllerV2 {
 
     @Autowired
     private InscripcionService inscripcionService;
 
-    @GetMapping
+    @Autowired
+    private InscripcionModelAssembler inscripcionModelAssembler;
+
+    @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(
             summary = "Endpoint que obtiene todas las inscripciones",
             description = "Este endpoint devuelve un List de todas las inscripciones que se encuentren en la base de datos"
@@ -45,13 +57,21 @@ public class InscripcionController {
                     description = "Operacion de extacción de Inscripciones exitosa"
             )
     })
-    public ResponseEntity<List<InscripcionDTO>> findAll() {
+    public ResponseEntity<CollectionModel<EntityModel<InscripcionDTO>>> findAll() {
+        List<EntityModel<InscripcionDTO>> entityModels = this.inscripcionService.findAll()
+                .stream()
+                .map(inscripcionModelAssembler::toModel)
+                .toList();
+        CollectionModel<EntityModel<InscripcionDTO>> collectionModel = CollectionModel.of(
+                entityModels,
+                linkTo(methodOn(InscripcionControllerV2.class).findAll()).withSelfRel()
+        );
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(this.inscripcionService.findAll());
+                .body(collectionModel);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(
             summary = "Endpoint que devuelve una inscripcion por id",
             description = "Endpoint que va a devolver un Inscripcion.class al momento de buscarlo po id"
@@ -59,7 +79,11 @@ public class InscripcionController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Obtencion por id correcta"
+                    description = "Obtencion por id correcta",
+                    content = @Content(
+                            mediaType = MediaTypes.HAL_JSON_VALUE,
+                            schema = @Schema(implementation =  Inscripcion.class)
+                    )
             ),
             @ApiResponse(
                     responseCode = "404",
@@ -77,10 +101,14 @@ public class InscripcionController {
                     required = true
             )
     })
-    public ResponseEntity<Inscripcion> findById(@PathVariable Long id) {
+    public ResponseEntity<EntityModel<InscripcionDTO>> findById(@PathVariable Long id) {
+        EntityModel<InscripcionDTO> entityModel = this.inscripcionModelAssembler.toModel(
+                this.inscripcionService.findByIdToDTO(id)
+        );
+
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(this.inscripcionService.findById(id));
+                .body(entityModel);
     }
 
     @DeleteMapping("/{id}")

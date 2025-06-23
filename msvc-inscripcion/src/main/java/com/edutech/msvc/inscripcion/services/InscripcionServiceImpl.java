@@ -46,26 +46,7 @@ public class InscripcionServiceImpl implements InscripcionService{
                 throw new InscripcionException("El curso no existe en la base de datos");
             }
 
-            AlumnoDTO alumnoDTO = new AlumnoDTO();
-            alumnoDTO.setRun(alumno.getRun());
-            alumnoDTO.setNombres(alumno.getNombres());
-            alumnoDTO.setApellidos(alumno.getApellidos());
-            alumnoDTO.setCorreo(alumno.getCorreo());
-            alumnoDTO.setFechaNacimiento(alumno.getFechaNacimiento());
-
-            CursoDTO cursoDTO = new CursoDTO();
-            cursoDTO.setNombre(curso.getNombre());
-            cursoDTO.setComentario(curso.getComentario());
-            cursoDTO.setDuracion(curso.getDuracion());
-            cursoDTO.setFechaCreacion(curso.getFechaCreacion());
-            cursoDTO.setPrecio(curso.getPrecio());
-
-            InscripcionDTO inscripcionDTO = new InscripcionDTO();
-            inscripcionDTO.setAlumno(alumnoDTO);
-            inscripcionDTO.setCurso(cursoDTO);
-            inscripcionDTO.setFechaInscripcion(inscripcion.getFechaInscripcion());
-
-            return inscripcionDTO;
+            return fillDTO(alumno, curso, inscripcion);
         }).toList();
     }
 
@@ -116,5 +97,50 @@ public class InscripcionServiceImpl implements InscripcionService{
     @Override
     public List<Inscripcion> findByCursoId(Long cursoId) {
         return this.inscripcionRepository.findByIdCurso(cursoId);
+    }
+
+    @Override
+    public InscripcionDTO fillDTO(Alumnos alumno, Cursos curso, Inscripcion inscripcion){
+
+        AlumnoDTO alumnoDTO = new AlumnoDTO();
+        alumnoDTO.setRun(alumno.getRun());
+        alumnoDTO.setNombres(alumno.getNombres());
+        alumnoDTO.setApellidos(alumno.getApellidos());
+        alumnoDTO.setCorreo(alumno.getCorreo());
+        alumnoDTO.setFechaNacimiento(alumno.getFechaNacimiento());
+
+        CursoDTO cursoDTO = new CursoDTO();
+        cursoDTO.setNombre(curso.getNombre());
+        cursoDTO.setComentario(curso.getComentario());
+        cursoDTO.setDuracion(curso.getDuracion());
+        cursoDTO.setFechaCreacion(curso.getFechaCreacion());
+        cursoDTO.setPrecio(curso.getPrecio());
+
+        InscripcionDTO inscripcionDTO = new InscripcionDTO();
+        inscripcionDTO.setAlumno(alumnoDTO);
+        inscripcionDTO.setCurso(cursoDTO);
+        inscripcionDTO.setFechaInscripcion(inscripcion.getFechaInscripcion());
+
+        return inscripcionDTO;
+    }
+
+    @Override
+    public InscripcionDTO findByIdToDTO(Long id){
+        Inscripcion inscripcion = this.findById(id);
+        Alumnos alumno = null;
+        try{
+            alumno = this.alumnoClientRest.findById(inscripcion.getIdAlumno());
+        }catch (FeignException ex){
+            throw new InscripcionException("El alumno buscado no existe");
+        }
+
+        Cursos curso = null;
+        try {
+            curso = this.cursosClientRest.findById(inscripcion.getIdCurso());
+        }catch (FeignException ex){
+            throw new InscripcionException("El curso no existe en la base de datos");
+        }
+
+        return fillDTO(alumno, curso, inscripcion);
     }
 }

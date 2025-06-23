@@ -41,7 +41,7 @@ public class CursoController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "Operacion de esctacción de medicos exitosa"
+                    description = "Operacion de esctacción de cursos exitosa"
             )
     })
     public ResponseEntity<List<Curso>> findAll(){
@@ -61,7 +61,7 @@ public class CursoController {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "Error cuando el medico con cierto id no existe",
+                    description = "Error cuando el curso con cierto id no existe",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDTO.class)
@@ -121,7 +121,6 @@ public class CursoController {
                     )
             )
     })
-
     public ResponseEntity<Curso> updateById(@PathVariable Long id, @Valid @RequestBody CursoUpdateDTO cursoUpdateDTO){
         Curso cursoActualizado = cursoService.updateById(id, cursoUpdateDTO);
         return ResponseEntity

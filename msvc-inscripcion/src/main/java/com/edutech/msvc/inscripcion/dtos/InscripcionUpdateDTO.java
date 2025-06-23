@@ -1,6 +1,5 @@
 package com.edutech.msvc.inscripcion.dtos;
 
-import com.edutech.msvc.inscripcion.models.entities.Inscripcion;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -11,9 +10,9 @@ import java.time.LocalDate;
 
 @Getter @Setter @ToString
 @NoArgsConstructor @AllArgsConstructor
-public class InscripcionDTO extends Inscripcion {
+public class InscripcionUpdateDTO {
 
     private LocalDate fechaInscripcion;
-    private CursoDTO curso;
-    private AlumnoDTO alumno;
+    private Long idCurso;
+    private Long idAlumno;
 }
