@@ -83,7 +83,7 @@ public class CursoServiceTest {
 
     @Test
     @DisplayName("Encontrar por id un curso que no existe")
-    public void shouldNotFindMedicoById(){
+    public void shouldNotFindCursoById(){
         Long idInexisente = Long.valueOf(10067L);
         when(cursoRepository.findById(idInexisente)).thenReturn(Optional.empty());
 

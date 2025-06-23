@@ -5,6 +5,7 @@ import com.edutech.msvc.inscripcion.clients.CursosClientRest;
 import com.edutech.msvc.inscripcion.dtos.AlumnoDTO;
 import com.edutech.msvc.inscripcion.dtos.CursoDTO;
 import com.edutech.msvc.inscripcion.dtos.InscripcionDTO;
+import com.edutech.msvc.inscripcion.dtos.InscripcionUpdateDTO;
 import com.edutech.msvc.inscripcion.exceptions.InscripcionException;
 import com.edutech.msvc.inscripcion.models.Alumnos;
 import com.edutech.msvc.inscripcion.models.Cursos;
@@ -88,6 +89,23 @@ public class InscripcionServiceImpl implements InscripcionService{
             throw new InscripcionException("Existen problemas con la asosiacion Curso");
         }
         return this.inscripcionRepository.save(inscripcion);
+    }
+
+    @Override
+    public void delete(Long id){
+        this.inscripcionRepository.deleteById(id);
+    }
+
+    @Override
+    public Inscripcion updateById(Long id, InscripcionUpdateDTO inscripcionUpdateDTO){
+        return this.inscripcionRepository.findById(id).map(inscripcion -> {
+            inscripcion.setFechaInscripcion(inscripcionUpdateDTO.getFechaInscripcion());
+            inscripcion.setIdAlumno(inscripcionUpdateDTO.getIdAlumno());
+            inscripcion.setIdCurso(inscripcionUpdateDTO.getIdCurso());
+            return this.inscripcionRepository.save(inscripcion);
+        }).orElseThrow(
+                () -> new InscripcionException("Inscripcion con id " + id + " no encontrada")
+        );
     }
 
     @Override

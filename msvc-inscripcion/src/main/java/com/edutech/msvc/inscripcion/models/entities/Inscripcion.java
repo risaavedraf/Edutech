@@ -28,4 +28,10 @@ public class Inscripcion {
     @Column(name = "id_alumno", nullable = false)
     @NotNull(message = "Campo idAlumno no puede estar vacia")
     private Long idAlumno;
+
+    public Inscripcion(LocalDate fechaInscripcion, Long idCurso, Long idAlumno) {
+        this.fechaInscripcion = fechaInscripcion;
+        this.idCurso = idCurso;
+        this.idAlumno = idAlumno;
+    }
 }

@@ -3,6 +3,7 @@ package com.edutech.msvc.cursos.services;
 import com.edutech.msvc.cursos.clients.AlumnoClientRest;
 import com.edutech.msvc.cursos.clients.InscripcionClientRest;
 import com.edutech.msvc.cursos.dtos.AlumnoDTO;
+import com.edutech.msvc.cursos.dtos.CursoUpdateDTO;
 import com.edutech.msvc.cursos.dtos.InscripcionCursoDTO;
 import com.edutech.msvc.cursos.exceptions.CursoException;
 import com.edutech.msvc.cursos.models.Alumno;
@@ -36,6 +37,25 @@ public class CursoServiceImpl implements CursoService {
                 () -> new CursoException("El curso con id: " + id + " no se encuentra en la base de datos")
         );
     }
+
+    @Override
+    public void delete(Long id){
+        this.cursoRepository.deleteById(id);
+    }
+
+     public Curso updateById(Long id, CursoUpdateDTO cursoUpdateDTO){
+        return this.cursoRepository.findById(id).map(curso ->{
+            curso.setNombre(cursoUpdateDTO.getNombre());
+            curso.setComentario(cursoUpdateDTO.getComentario());
+            curso.setDuracion(cursoUpdateDTO.getDuracion());
+            curso.setPrecio(cursoUpdateDTO.getPrecio());
+            curso.setEstado(cursoUpdateDTO.getEstado());
+            return this.cursoRepository.save(curso);
+        }).orElseThrow(
+                () -> new CursoException("Alumno con id " + id + " no encontrado")
+        );
+     }
+
 
     @Override
     public Curso save(Curso curso){

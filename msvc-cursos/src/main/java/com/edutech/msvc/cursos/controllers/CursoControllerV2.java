@@ -1,6 +1,7 @@
 package com.edutech.msvc.cursos.controllers;
 
 import com.edutech.msvc.cursos.assemblers.CursoModelAssembler;
+import com.edutech.msvc.cursos.dtos.CursoUpdateDTO;
 import com.edutech.msvc.cursos.dtos.ErrorDTO;
 import com.edutech.msvc.cursos.models.entities.Curso;
 import com.edutech.msvc.cursos.services.CursoService;
@@ -46,8 +47,8 @@ public class CursoControllerV2 {
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(
-            summary = "Endpoint que obtiene todos los medicos",
-            description = "Este endpoint devuelve en un List todos lo médicos que se encuentren en la vase de datos"
+            summary = "Endpoint que obtiene todos los cursos",
+            description = "Este endpoint devuelve en un List todos lo médicos que se encuentren en la base de datos"
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -118,6 +119,57 @@ public class CursoControllerV2 {
                 .status(HttpStatus.OK)
                 .body(entityModel);
     }
+
+
+    @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Elimina un curso por su id",
+            description = "Este metodo elimina un Curso de la base de datos, " +
+                    "si el id no existe retorna un error 404"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Curso eliminado correctamente"),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Error - Curso con ID no existe",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)
+                    )
+            )
+    })
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        cursoService.delete(id);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
+
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Actualiza un Curso",
+            description = "Este endpoint permite actualizar un Curso existente"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Curso actualizado correctamente"),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Curso no encontrado con el id suministrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)
+                    )
+            )
+    })
+
+    public ResponseEntity<Curso> updateById(@PathVariable Long id, @Valid @RequestBody CursoUpdateDTO cursoUpdateDTO){
+        Curso cursoActualizado = cursoService.updateById(id, cursoUpdateDTO);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cursoActualizado);
+    }
+
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(
