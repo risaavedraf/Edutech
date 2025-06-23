@@ -158,14 +158,21 @@ public class InscripcionControllerV2 {
                 .body(inscripcionActualizado);
     }
 
-    @PostMapping
+    @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
     @Operation(
             summary = "Endpoint guardado de una inscripcion",
             description = "Endpoint que me permite capturar un elemento Inscripcion.class y lo guarda " +
                     "dentro de nuestra base de datos"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Creacion exitosa"),
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Creacion exitosa",
+                    content = @Content(
+                            mediaType = MediaTypes.HAL_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorDTO.class)
+                    )
+            ),
             @ApiResponse(
                     responseCode = "404",
                     description = "Algun elemento de un msvc no se encuentra",
@@ -190,10 +197,13 @@ public class InscripcionControllerV2 {
                     schema = @Schema(implementation = Inscripcion.class)
             )
     )
-    public ResponseEntity<Inscripcion> save(@RequestBody @Valid Inscripcion inscripcion) {
+    public ResponseEntity<EntityModel<InscripcionDTO>> save(@RequestBody @Valid Inscripcion inscripcion) {
+        Inscripcion inscripcionNew = this.inscripcionService.save(inscripcion);
+        InscripcionDTO ent = this.inscripcionService.findByIdToDTO(inscripcionNew.getIdInscripcion());
+        EntityModel<InscripcionDTO> entityModel = this.inscripcionModelAssembler.toModel(ent);
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(this.inscripcionService.save(inscripcion));
+                .created(linkTo(methodOn(InscripcionControllerV2.class).findById(inscripcionNew.getIdCurso())).toUri())
+                .body(entityModel);
     }
 
     // Estos metodos permiten mostrar las Inscripciones filtradas para un Alumno
