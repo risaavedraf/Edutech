@@ -1,6 +1,7 @@
 package com.edutech.msvc.boleta.controllers;
 
 import com.edutech.msvc.boleta.assemblers.BoletaModelAssembler;
+import com.edutech.msvc.boleta.dtos.BoletaDTO;
 import com.edutech.msvc.boleta.dtos.ErrorDTO;
 import com.edutech.msvc.boleta.models.entities.Boleta;
 import com.edutech.msvc.boleta.services.BoletaService;
@@ -56,12 +57,12 @@ public class BoletaControllerV2 {
             )
     })
     public ResponseEntity<CollectionModel<EntityModel<Boleta>>> findAll() {
-        List<EntityModel<Boleta>> entityModels = this.boletaService.findAll()
+        List<EntityModel<BoletaDTO>> entityModels = this.boletaService.findAll()
                 .stream()
                 .map(boletaModelAssembler::toModel)
                 .toList();
 
-        CollectionModel<EntityModel<Boleta>> collectionModel = CollectionModel.of(
+        CollectionModel<EntityModel<BoletaDTO>> collectionModel = CollectionModel.of(
                 entityModels,
                 linkTo(methodOn(BoletaControllerV2.class).findAll()).withSelfRel()
         );
@@ -85,8 +86,8 @@ public class BoletaControllerV2 {
     @Parameters({
             @Parameter(name = "id", description = "ID de la boleta", required = true)
     })
-    public ResponseEntity<EntityModel<Boleta>> findById(@PathVariable Long id) {
-        EntityModel<Boleta> entityModel = this.boletaModelAssembler.toModel(
+    public ResponseEntity<EntityModel<BoletaDTO>> findById(@PathVariable Long id) {
+        EntityModel<BoletaDTO> entityModel = this.boletaModelAssembler.toModel(
                 this.boletaService.findById(id)
         );
         return ResponseEntity.status(HttpStatus.OK).body(entityModel);
@@ -117,7 +118,7 @@ public class BoletaControllerV2 {
     )
     public ResponseEntity<EntityModel<Boleta>> create(@Valid @RequestBody Boleta boleta) {
         Boleta nuevaBoleta = this.boletaService.save(boleta);
-        EntityModel<Boleta> entityModel = this.boletaModelAssembler.toModel(nuevaBoleta);
+        EntityModel<BoletaDTO> entityModel = this.boletaModelAssembler.toModel(nuevaBoleta);
         return ResponseEntity
                 .created(linkTo(methodOn(BoletaControllerV2.class).findById(nuevaBoleta.getIdBoleta())).toUri())
                 .body(entityModel);
