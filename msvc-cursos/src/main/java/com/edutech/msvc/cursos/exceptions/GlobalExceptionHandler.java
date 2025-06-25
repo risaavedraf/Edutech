@@ -1,6 +1,5 @@
 package com.edutech.msvc.cursos.exceptions;
 
-import com.ccarrasco.msvc.medicos.dtos.ErrorDTO;
 import com.edutech.msvc.cursos.dtos.ErrorDTO;
 import com.edutech.msvc.cursos.models.entities.Curso;
 import org.springframework.http.HttpStatus;

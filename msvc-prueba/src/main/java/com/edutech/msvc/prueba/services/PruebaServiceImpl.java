@@ -31,7 +31,7 @@ public class PruebaServiceImpl implements PruebaService {
 
 
     @Override
-    public List<Prueba> findAll() {
+    public List<PruebaDTO> findAll() {
         return this.pruebaRepository.findAll().stream().map(Prueba ->{
             Prueba prueba = null;
 

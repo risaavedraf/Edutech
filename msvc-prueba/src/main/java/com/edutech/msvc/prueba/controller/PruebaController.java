@@ -21,7 +21,7 @@ public class PruebaController {
     private PruebaService pruebaService;
 
     @GetMapping
-    public ResponseEntity<List<Prueba>>findAll() {
+    public ResponseEntity<List<PruebaDTO>>findAll() {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(this.pruebaService.findAll());

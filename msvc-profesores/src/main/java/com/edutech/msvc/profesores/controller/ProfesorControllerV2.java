@@ -72,7 +72,7 @@ public class ProfesorControllerV2 {
 
     @GetMapping("/{id}")
         @Operation(
-                summary = "Obtiene un alumno por su id",
+                summary = "Obtiene un profesor por su id",
                 description = "Este metodo retorna un profesor cuando es consultado mediante su id"
         )
         @ApiResponses(value = {

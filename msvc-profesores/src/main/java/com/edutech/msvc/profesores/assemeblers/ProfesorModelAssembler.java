@@ -14,7 +14,7 @@ public class ProfesorModelAssembler implements RepresentationModelAssembler<Prof
         return EntityModel.of(
                 entity,
                 linkTo(methodOn(ProfesorControllerV2.class).findById(entity.getIdProfesor())).withSelfRel(),
-                linkTo(methodOn(ProfesorControllerV2.class).findAll()).withRel("alumnos")
+                linkTo(methodOn(ProfesorControllerV2.class).findAll()).withRel("profesor")
         );
     }
 }

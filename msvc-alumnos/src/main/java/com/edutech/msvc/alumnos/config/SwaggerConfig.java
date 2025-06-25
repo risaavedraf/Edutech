@@ -16,9 +16,10 @@ public class SwaggerConfig {
         contact.setEmail("lukas.armijo@gmail.com");
         return new OpenAPI()
                 .info(new Info()
-                        .title("API - MSVC - Médicos")
+                        .title("API - MSVC - Alumnos")
                         .version("1.0.0")
-                        .description("Este es el microservicio de Medicos, con el puedes realizar todas las consultas" +
+                        .description("Este es el microservicio de Alumnos" +
+                                ", con el puedes realizar todas las consultas" +
                                 " CRUD que necesites")
                         .contact(contact)
                         .summary("esto es una api dentro de un proyecti de MSVC")
