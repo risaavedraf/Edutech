@@ -3,7 +3,6 @@ package com.edutech.msvc.prueba.services;
 
 import com.edutech.msvc.prueba.clients.CursosClientRest;
 import com.edutech.msvc.prueba.clients.ProfesorClientRest;
-import com.edutech.msvc.prueba.clients.PruebaClientRest;
 import com.edutech.msvc.prueba.dtos.CursoDTO;
 import com.edutech.msvc.prueba.dtos.ProfesorDTO;
 import com.edutech.msvc.prueba.dtos.PruebaDTO;
@@ -32,7 +31,7 @@ public class PruebaServiceImpl implements PruebaService {
 
 
     @Override
-    public List<PruebaDTO> findAll() {
+    public List<Prueba> findAll() {
         return this.pruebaRepository.findAll().stream().map(Prueba ->{
             Prueba prueba = null;
 
