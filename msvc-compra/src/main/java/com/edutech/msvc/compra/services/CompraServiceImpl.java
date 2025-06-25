@@ -71,8 +71,8 @@ public class CompraServiceImpl implements CompraService {
             CursoDTO cursoDTO = new CursoDTO();
             cursoDTO.setIdCurso(curso.getIdCurso());
             cursoDTO.setNombreCurso(curso.getNombreCurso());
-            cursoDTO.setPrecioCurso(curso.getPrecioCurso());
-            cursoDTO.setDescripcionCurso(curso.getDescripcionCurso());
+            cursoDTO.setPrecio(curso.getPrecioCurso());
+            cursoDTO.setDescripcion(curso.getDescripcionCurso());
 
             CompraDTO compraDTO = new CompraDTO();
             compraDTO.setProfesor(profesorDTO);
@@ -109,6 +109,11 @@ public class CompraServiceImpl implements CompraService {
     @Override
     public List<Compra> findByProfesorId(Long profesorId) {
         return this.compraRepository.findByIdProfesor(profesorId);
+    }
+
+    @Override
+    public List<Compra> findByIdCurso(Long id) {
+        return List.of();
     }
 
     @Override

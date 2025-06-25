@@ -50,6 +50,6 @@ public class CompraController {
     public ResponseEntity<List<Compra>> findByIdCurso(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(this.compraService.findByCursoId(id));
+                .body(this.compraService.findByIdCurso(id));
     }
 }

@@ -1,7 +1,7 @@
 package com.edutech.msvc.compra.services;
 
 import com.edutech.msvc.compra.exceptions.CompraException;
-import com.edutech.msvc.boleta.models.entities.Compra;
+import com.edutech.msvc.compra.model.entity.Compra;
 import com.edutech.msvc.compra.repositories.CompraRepository;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,8 +36,8 @@ public class CompraServiceTest {
     public void setUp() {
         this.compraPrueba = new Compra();
         compraPrueba.setIdCompra(1L);
-        compraPrueba.setHoraCompra(LocalDateTime.now());
-        compraPrueba.setTotal(15000);
+        compraPrueba.setFechaCompra(LocalDateTime.now());
+        compraPrueba.setPrecioTotal(15000);
         compraPrueba.setIdCurso(111L);
         compraPrueba.setIdAlumno(222L);
 
@@ -45,8 +45,8 @@ public class CompraServiceTest {
         for (int i = 0; i < 100; i++) {
             Compra c = new Compra();
             c.setIdCompra((long) i + 2);
-            c.setHoraCompra(LocalDateTime.now().minusDays(faker.number().numberBetween(1, 30)));
-            c.setTotal(faker.number().numberBetween(5000, 30000));
+            c.setFechaCompra(LocalDateTime.now().minusDays(faker.number().numberBetween(1, 30)));
+            c.setPrecioTotal(faker.number().numberBetween(5000, 30000));
             c.setIdCurso((long) faker.number().numberBetween(100, 200));
             c.setIdAlumno((long) faker.number().numberBetween(200, 300));
             compras.add(c);

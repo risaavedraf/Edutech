@@ -16,4 +16,6 @@ public interface CompraService {
     List<Compra> findByAlumnoId(Long alumnoId);
 
     List<Compra> findByProfesorId(Long profesorId);
+
+    List<Compra> findByIdCurso(Long id);
 }

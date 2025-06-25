@@ -1,6 +1,6 @@
-package com.edutech.compra.exceptions;
+package com.edutech.msvc.compra.exceptions;
 
-import com.edutech.compra.dtos.ErrorDTO;
+import com.edutech.msvc.compra.dtos.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
