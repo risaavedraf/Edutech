@@ -116,7 +116,7 @@ public class BoletaControllerV2 {
             description = "Boleta a registrar",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Boleta.class))
     )
-    public ResponseEntity<EntityModel<Boleta>> create(@Valid @RequestBody Boleta boleta) {
+    public ResponseEntity<EntityModel<BoletaDTO>> create(@Valid @RequestBody Boleta boleta) {
         Boleta nuevaBoleta = this.boletaService.save(boleta);
         EntityModel<BoletaDTO> entityModel = this.boletaModelAssembler.toModel(nuevaBoleta);
         return ResponseEntity

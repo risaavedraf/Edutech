@@ -1,5 +1,6 @@
 package com.edutech.msvc.boleta.dtos;
 
+import com.edutech.msvc.boleta.models.entities.Boleta;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoletaDTO {
+public class BoletaDTO extends Boleta {
 
     private LocalDateTime fechaBoleta;
     private Integer total;
