@@ -22,7 +22,7 @@ import java.util.List;
 
 @Service
 @Data
-public class BoletaServiceImpl implements BoletaService {
+public class BoletteServiceImpl implements BoletaService {
 
     @Autowired
     private BoletaRepository boletaRepository;
@@ -124,5 +124,9 @@ public class BoletaServiceImpl implements BoletaService {
     @Override
     public List<Boleta> findByCursoId(Long cursoId) {
         return this.boletaRepository.findByIdCurso(cursoId);
+    }
+
+    public List<Boleta> findByTotalGreaterThanEqual(int montoMinimo) {
+        return List.of();
     }
 }

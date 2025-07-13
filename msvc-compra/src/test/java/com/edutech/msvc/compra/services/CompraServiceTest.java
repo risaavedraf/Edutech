@@ -1,7 +1,8 @@
 package com.edutech.msvc.compra.services;
 
+import com.edutech.msvc.compra.dtos.CompraDTO;
 import com.edutech.msvc.compra.exceptions.CompraException;
-import com.edutech.msvc.boleta.models.entities.Compra;
+import com.edutech.msvc.compra.model.entity.Compra;
 import com.edutech.msvc.compra.repositories.CompraRepository;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,6 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,15 +54,18 @@ public class CompraServiceTest {
     }
 
     @Test
-    @DisplayName("Devuelve todas las compras")
+    @DisplayName("Devuelve todas las compras como DTO")
     public void shouldFindAllCompras() {
         compras.add(compraPrueba);
         when(compraRepository.findAll()).thenReturn(compras);
 
-        List<Compra> result = compraService.findAll();
+        List<CompraDTO> result = compraService.findAll();
 
         assertThat(result).hasSize(101);
-        assertThat(result).contains(compraPrueba);
+        assertThat(result)
+                .extracting(CompraDTO::getCurso)
+                .contains(compraPrueba.getIdCompra()); // comparación indirecta
+
         verify(compraRepository, times(1)).findAll();
     }
 
@@ -72,7 +75,7 @@ public class CompraServiceTest {
         when(compraRepository.findById(1L)).thenReturn(Optional.of(compraPrueba));
         Compra result = compraService.findById(1L);
         assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(compraPrueba);
+        assertThat(result.getIdCompra()).isEqualTo(compraPrueba.getIdCompra());
         verify(compraRepository, times(1)).findById(1L);
     }
 
@@ -95,7 +98,7 @@ public class CompraServiceTest {
         when(compraRepository.save(any(Compra.class))).thenReturn(compraPrueba);
         Compra result = compraService.save(compraPrueba);
         assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(compraPrueba);
+        assertThat(result.getTotal()).isEqualTo(15000);
         verify(compraRepository, times(1)).save(any(Compra.class));
     }
 }

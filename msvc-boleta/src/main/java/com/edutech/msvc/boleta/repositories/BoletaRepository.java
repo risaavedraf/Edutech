@@ -4,6 +4,7 @@ import com.edutech.msvc.boleta.models.entities.Boleta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -13,4 +14,7 @@ public interface BoletaRepository extends JpaRepository<Boleta, Long> {
     List<Boleta> findByIdProfesor(Long idProfesor);
     List<Boleta> findByIdCurso(Long idCurso);
 
+
+    List<Boleta> findByHoraBoletaBetween(LocalDateTime desde, LocalDateTime hasta);
+    List<Boleta> findByTotalGreaterThanEqual(Integer monto);
 }

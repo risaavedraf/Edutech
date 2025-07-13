@@ -53,4 +53,7 @@ public class Compra {
 
     public void setfechaCompra(LocalDateTime localDateTime) {
     }
+
+    public Object getTotal() {
+    }
 }

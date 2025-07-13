@@ -13,7 +13,11 @@ public interface CompraService {
 
     Compra save(Compra compra);
 
+    List<Compra> findByIdCurso(Long id);
+
     List<Compra> findByAlumnoId(Long alumnoId);
 
     List<Compra> findByProfesorId(Long profesorId);
+
+    List<Compra> findByCursoId(Long id);
 }

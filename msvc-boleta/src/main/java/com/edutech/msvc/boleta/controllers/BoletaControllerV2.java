@@ -56,7 +56,7 @@ public class BoletaControllerV2 {
                     )
             )
     })
-    public ResponseEntity<CollectionModel<EntityModel<Boleta>>> findAll() {
+    public ResponseEntity<CollectionModel<EntityModel<BoletaDTO>>> findAll() {
         List<EntityModel<BoletaDTO>> entityModels = this.boletaService.findAll()
                 .stream()
                 .map(boletaModelAssembler::toModel)
@@ -88,7 +88,7 @@ public class BoletaControllerV2 {
     })
     public ResponseEntity<EntityModel<BoletaDTO>> findById(@PathVariable Long id) {
         EntityModel<BoletaDTO> entityModel = this.boletaModelAssembler.toModel(
-                this.boletaService.findById(id)
+                (BoletaDTO) this.boletaService.findById(id)
         );
         return ResponseEntity.status(HttpStatus.OK).body(entityModel);
     }
@@ -118,7 +118,7 @@ public class BoletaControllerV2 {
     )
     public ResponseEntity<EntityModel<BoletaDTO>> create(@Valid @RequestBody Boleta boleta) {
         Boleta nuevaBoleta = this.boletaService.save(boleta);
-        EntityModel<BoletaDTO> entityModel = this.boletaModelAssembler.toModel(nuevaBoleta);
+        EntityModel<BoletaDTO> entityModel = this.boletaModelAssembler.toModel((BoletaDTO) nuevaBoleta);
         return ResponseEntity
                 .created(linkTo(methodOn(BoletaControllerV2.class).findById(nuevaBoleta.getIdBoleta())).toUri())
                 .body(entityModel);
