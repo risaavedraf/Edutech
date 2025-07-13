@@ -112,6 +112,11 @@ public abstract class CompraServiceImpl implements CompraService {
     }
 
     @Override
+    public List<Compra> findByIdCurso(Long id) {
+        return List.of();
+    }
+
+    @Override
     public List<Compra> findByAlumnoId(Long alumnoId) {
         return this.compraRepository.findByIdAlumno(alumnoId);
     }

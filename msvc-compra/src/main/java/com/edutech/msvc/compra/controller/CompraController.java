@@ -50,22 +50,6 @@ public class CompraController {
     public ResponseEntity<List<Compra>> findByIdCurso(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(this.compraService.findByCompraId(id));
-
-
-    }
-    @GetMapping("/alumno/{id}")
-    public ResponseEntity<List<Compra>> findByAlumnoId(@PathVariable Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(this.compraService.findByAlumnoId(id));
-    }
-
-    @GetMapping("/curso/{id}")
-    public ResponseEntity<List<Compra>> findByCursoId(@PathVariable Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
                 .body(this.compraService.findByCursoId(id));
     }
-
 }

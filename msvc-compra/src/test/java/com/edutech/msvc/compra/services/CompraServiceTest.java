@@ -1,8 +1,7 @@
 package com.edutech.msvc.compra.services;
 
-import com.edutech.msvc.compra.dtos.CompraDTO;
 import com.edutech.msvc.compra.exceptions.CompraException;
-import com.edutech.msvc.compra.model.entity.Compra;
+import com.edutech.msvc.boleta.models.entities.Compra;
 import com.edutech.msvc.compra.repositories.CompraRepository;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,10 +11,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.time.LocalDateTime;
 import java.util.*;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -27,8 +28,8 @@ public class CompraServiceTest {
 
     @InjectMocks
     private CompraServiceImpl compraService;
-;
-    private Compra compraPrueba
+
+    private Compra compraPrueba;
     private List<Compra> compras = new ArrayList<>();
 
     @BeforeEach
@@ -44,7 +45,7 @@ public class CompraServiceTest {
         for (int i = 0; i < 100; i++) {
             Compra c = new Compra();
             c.setIdCompra((long) i + 2);
-            c.setfechaCompra(LocalDateTime.now().minusDays(faker.number().numberBetween(1, 30)));
+            c.setHoraCompra(LocalDateTime.now().minusDays(faker.number().numberBetween(1, 30)));
             c.setTotal(faker.number().numberBetween(5000, 30000));
             c.setIdCurso((long) faker.number().numberBetween(100, 200));
             c.setIdAlumno((long) faker.number().numberBetween(200, 300));
@@ -58,7 +59,7 @@ public class CompraServiceTest {
         compras.add(compraPrueba);
         when(compraRepository.findAll()).thenReturn(compras);
 
-        List<CompraDTO> result = compraService.findAll();
+        List<Compra> result = compraService.findAll();
 
         assertThat(result).hasSize(101);
         assertThat(result).contains(compraPrueba);

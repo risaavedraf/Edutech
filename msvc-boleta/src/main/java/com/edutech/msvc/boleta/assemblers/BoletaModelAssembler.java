@@ -1,6 +1,8 @@
 package com.edutech.msvc.boleta.assemblers;
 
 import com.edutech.msvc.boleta.controllers.BoletaController;
+import com.edutech.msvc.boleta.controllers.BoletaControllerV2;
+import com.edutech.msvc.boleta.dtos.BoletaDTO;
 import com.edutech.msvc.boleta.models.entities.Boleta;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -9,16 +11,15 @@ import org.springframework.stereotype.Component;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Component
-public class BoletaModelAssembler implements RepresentationModelAssembler<Boleta, EntityModel<Boleta>> {
+public class BoletaModelAssembler implements RepresentationModelAssembler<BoletaDTO, EntityModel<BoletaDTO>> {
 
     @Override
-    public EntityModel<Boleta> toModel(Boleta boleta) {
+    public EntityModel<BoletaDTO> toModel(BoletaDTO entity) {
         return EntityModel.of(
-                boleta,
-                linkTo(methodOn(BoletaController.class).findById(boleta.getIdBoleta())).withSelfRel(),
-                linkTo(methodOn(BoletaController.class).findAll()).withRel("boletas"),
-                linkTo(methodOn(BoletaController.class).findByAlumnoId(boleta.getIdAlumno())).withRel("alumno"),
-                linkTo(methodOn(BoletaController.class).findByProfesorId(boleta.getIdProfesor())).withRel("profesor")
+                entity,
+                    linkTo(methodOn(BoletaControllerV2.class).findById(entity.getIdBoleta())).withSelfRel(),
+                    linkTo(methodOn(BoletaControllerV2.class).findAll()).withRel("Boleta")
+
         );
     }
 }
