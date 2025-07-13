@@ -1,7 +1,7 @@
 package com.edutech.msvc.compra.assemblers;
 
-import com.edutech.msvc.compra.controllers.CompraController;
-import com.edutech.msvc.compra.model.entities.Compra;
+import com.edutech.msvc.compra.controller.CompraController;
+import com.edutech.msvc.compra.model.entity.Compra;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;

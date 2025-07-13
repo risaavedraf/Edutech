@@ -22,7 +22,7 @@ import java.util.List;
 
 @Service
 @Data
-public class CompraServiceImpl implements CompraService {
+public abstract class CompraServiceImpl implements CompraService {
 
     @Autowired
     private CompraRepository compraRepository;
@@ -71,8 +71,8 @@ public class CompraServiceImpl implements CompraService {
             CursoDTO cursoDTO = new CursoDTO();
             cursoDTO.setIdCurso(curso.getIdCurso());
             cursoDTO.setNombreCurso(curso.getNombreCurso());
-            cursoDTO.setPrecioCurso(curso.getPrecioCurso());
-            cursoDTO.setDescripcionCurso(curso.getDescripcionCurso());
+            cursoDTO.setPrecio(curso.getPrecioCurso());
+            cursoDTO.setDescripcion(curso.getDescripcionCurso());
 
             CompraDTO compraDTO = new CompraDTO();
             compraDTO.setProfesor(profesorDTO);

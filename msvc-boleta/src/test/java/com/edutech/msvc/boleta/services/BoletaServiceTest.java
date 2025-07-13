@@ -102,3 +102,4 @@ public class BoletaServiceTest {
         verify(boletaRepository, times(1)).save(any(Boleta.class));
     }
 }
+

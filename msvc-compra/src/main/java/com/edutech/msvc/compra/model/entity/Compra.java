@@ -44,4 +44,13 @@ public class Compra {
     @Column(name = "fecha_compra", nullable = false)
     @NotNull(message = "El campo fecha_compra no puede estar vacío")
     private LocalDateTime fechaCompra;
+
+    public void setHoraCompra(LocalDateTime now) {
+    }
+
+    public void setTotal(int i) {
+    }
+
+    public void setfechaCompra(LocalDateTime localDateTime) {
+    }
 }

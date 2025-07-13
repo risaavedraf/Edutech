@@ -1,6 +1,7 @@
 package com.edutech.msvc.compra.controller;
 
 import com.edutech.msvc.compra.assemblers.CompraModelAssembler;
+import com.edutech.msvc.compra.dtos.CompraDTO;
 import com.edutech.msvc.compra.dtos.ErrorDTO;
 import com.edutech.msvc.compra.model.entity.Compra;
 import com.edutech.msvc.compra.services.CompraService;
@@ -52,12 +53,12 @@ public class CompraControllerV2 {
             @ApiResponse(
                     responseCode = "200",
                     description = "Listado completo de compras",
-                    content = @Content(mediaType = MediaTypes.HAL_JSON_VALUE, schema = @Schema(implementation = Compra.class))
+                    content = @Content(mediaType = MediaTypes.HAL_JSON_VALUE, schema = @Schema(implementation = CompraDTO.class))
             )
     })
     public ResponseEntity<CollectionModel<EntityModel<Compra>>> findAll() {
-        List<EntityModel<Compra>> entityModels = this.compraService.findAll()
-                .stream()
+        List<EntityModel<Compra>> entityModels = this.compraService.findAll().stream()
+                .map(this::dtoToEntity) // convierte CompraDTO a Compra
                 .map(compraModelAssembler::toModel)
                 .toList();
 
@@ -77,7 +78,7 @@ public class CompraControllerV2 {
             @ApiResponse(
                     responseCode = "200",
                     description = "Compra encontrada",
-                    content = @Content(mediaType = MediaTypes.HAL_JSON_VALUE, schema = @Schema(implementation = Compra.class))
+                    content = @Content(mediaType = MediaTypes.HAL_JSON_VALUE, schema = @Schema(implementation = CompraDTO.class))
             ),
             @ApiResponse(
                     responseCode = "404",
@@ -89,9 +90,8 @@ public class CompraControllerV2 {
             @Parameter(name = "id", description = "ID de la compra", required = true)
     })
     public ResponseEntity<EntityModel<Compra>> findById(@PathVariable Long id) {
-        EntityModel<Compra> entityModel = this.compraModelAssembler.toModel(
-                this.compraService.findById(id)
-        );
+        Compra compra = this.compraService.findById(id);
+        EntityModel<Compra> entityModel = this.compraModelAssembler.toModel(compra);
         return ResponseEntity.status(HttpStatus.OK).body(entityModel);
     }
 
@@ -104,7 +104,7 @@ public class CompraControllerV2 {
             @ApiResponse(
                     responseCode = "201",
                     description = "Compra creada exitosamente",
-                    content = @Content(mediaType = MediaTypes.HAL_JSON_VALUE, schema = @Schema(implementation = Compra.class))
+                    content = @Content(mediaType = MediaTypes.HAL_JSON_VALUE, schema = @Schema(implementation = CompraDTO.class))
             ),
             @ApiResponse(
                     responseCode = "404",
@@ -127,5 +127,24 @@ public class CompraControllerV2 {
         return ResponseEntity
                 .created(linkTo(methodOn(CompraControllerV2.class).findById(nuevaCompra.getIdCompra())).toUri())
                 .body(entityModel);
+    }
+
+    //
+    private Compra dtoToEntity(CompraDTO dto) {
+        Compra compra = new Compra();
+
+        if (dto.getAlumno() != null) {
+            compra.setIdAlumno(Long.valueOf(dto.getAlumno().getRunAlumno()));
+        }
+
+        if (dto.getCurso() != null) {
+            compra.setIdCurso(dto.getCurso().getIdCurso());
+        }
+
+        if (dto.getProfesor() != null) {
+            compra.setIdProfesor(Long.valueOf(dto.getProfesor().getRunProfesor()));
+        }
+
+        return compra;
     }
 }

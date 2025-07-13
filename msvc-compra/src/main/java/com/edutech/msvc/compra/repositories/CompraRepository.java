@@ -12,4 +12,8 @@ public interface CompraRepository extends JpaRepository<Compra, Long> {
     List<Compra> findByIdAlumno(Long idAlumno);
 
     List<Compra> findByIdProfesor(Long idProfesor);
+
+    List<Compra> findByIdCurso(Long idCurso);
+
+
 }
