@@ -74,6 +74,9 @@ public class InscripcionServiceImpl implements InscripcionService{
 
     @Override
     public void delete(Long id){
+        if (!inscripcionRepository.existsById(id)){
+            throw new InscripcionException("Inscripcion con id " + id + " no existe");
+        }
         this.inscripcionRepository.deleteById(id);
     }
 

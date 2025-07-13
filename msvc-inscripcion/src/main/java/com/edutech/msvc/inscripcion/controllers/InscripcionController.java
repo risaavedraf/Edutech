@@ -27,7 +27,7 @@ import java.util.List;
 @Validated
 @Tag(
         name = "Inscripciones API",
-        description = "Aquí se generan todos los metodos CRUD para Inscaripcion"
+        description = "Aquí se generan todos los metodos CRUD para Inscripción"
 )
 public class InscripcionController {
 

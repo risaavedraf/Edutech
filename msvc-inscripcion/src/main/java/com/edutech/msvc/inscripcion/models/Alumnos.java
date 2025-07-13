@@ -19,4 +19,9 @@ public class Alumnos {
     private String correo;
     private String contraseña;
     private Boolean cuentaActiva;
+
+    public Alumnos(Long idUsuario, String nombre){
+        this.idUsuario = idUsuario;
+        this.nombres = nombre;
+    }
 }

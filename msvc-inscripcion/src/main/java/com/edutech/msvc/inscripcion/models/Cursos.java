@@ -18,4 +18,9 @@ public class Cursos {
     private LocalDate fechaCreacion;
     private Long precio;
     private Boolean estado;
+
+    public Cursos(Long idCurso, String nombre){
+        this.idCurso = idCurso;
+        this.nombre = nombre;
+    }
 }
