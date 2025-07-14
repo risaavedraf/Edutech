@@ -30,7 +30,7 @@ public class CompraServiceTest {
     private CompraServiceImpl compraService;
 
     private Compra compraPrueba;
-    private List<Compra> compras = new ArrayList<>();
+    private final List<Compra> compras = new ArrayList<>();
 
     @BeforeEach
     public void setUp() {

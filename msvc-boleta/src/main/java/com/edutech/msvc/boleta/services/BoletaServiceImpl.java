@@ -22,7 +22,7 @@ import java.util.List;
 
 @Service
 @Data
-public class BoletteServiceImpl implements BoletaService {
+public class BoletaServiceImpl implements BoletaService {
 
     @Autowired
     private BoletaRepository boletaRepository;
